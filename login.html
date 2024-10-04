@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h2 {
+            text-align: center;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .profile-pic-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .profile-pic-container img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        .file-input {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Login / Cadastro</h2>
+
+    <!-- Container da foto de perfil -->
+    <div class="profile-pic-container">
+        <!-- Exibe a imagem padrão ou a selecionada -->
+        <img id="profile-pic-display" src="default.jpeg" alt="Foto de Perfil">
+        <br>
+        <!-- Botão para escolher uma nova imagem -->
+        <button onclick="document.getElementById('profile-pic').click()">Escolher Foto</button>
+        <input type="file" id="profile-pic" class="file-input" accept="image/*" onchange="changeProfilePic()">
+    </div>
+
+    <input type="text" id="username" placeholder="Nome de usuário (5-12 caracteres)" maxlength="12">
+    <input type="password" id="password" placeholder="Senha (8-20 caracteres)" maxlength="20">
+    <button onclick="loginOrRegister()">Entrar / Cadastrar</button>
+</div>
+
+<script>
+    const users = JSON.parse(localStorage.getItem('users')) || {};
+    let selectedProfilePic = null;
+
+    // Função para exibir a imagem selecionada e armazenar o arquivo
+    function changeProfilePic() {
+        const fileInput = document.getElementById('profile-pic');
+        const file = fileInput.files[0];
+
+        if (file) {
+            const fileType = file.type;
+            // Verifica o tipo do arquivo
+            if (fileType === 'application/pdf' || fileType === 'image/wbmp' || fileType === 'video/mp4') {
+                alert('Formato de arquivo inválido. Selecione uma imagem válida.');
+                fileInput.value = ''; // Limpa o arquivo selecionado
+                return;
+            }
+
+            // Exibe a imagem selecionada
+            const reader = new FileReader();
+            reader.onloadend = function () {
+                document.getElementById('profile-pic-display').src = reader.result;
+                selectedProfilePic = reader.result; // Armazena a imagem selecionada
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Função para fazer login ou cadastro
+    function loginOrRegister() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        // Verificações de nome e senha
+        if (username.length < 5 || username.length > 12) {
+            alert('O nome de usuário deve ter entre 5 e 12 caracteres.');
+            return;
+        }
+        if (password.length < 8 || password.length > 20) {
+            alert('A senha deve ter entre 8 e 20 caracteres.');
+            return;
+        }
+
+        // Verifica se o usuário já existe
+        if (users[username]) {
+            // Usuário já cadastrado: validar a senha
+            if (users[username].password === password) {
+                alert('Login bem-sucedido!');
+                localStorage.setItem('user', JSON.stringify(users[username]));
+                window.location.href = 'forum.html';
+            } else {
+                alert('Senha incorreta!');
+            }
+        } else {
+            // Novo cadastro
+            if (!selectedProfilePic) {
+                alert('Por favor, selecione uma foto de perfil.');
+                return;
+            }
+
+            // Criar o novo usuário
+            users[username] = {
+                username: username,
+                password: password,
+                profilePic: selectedProfilePic
+            };
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('user', JSON.stringify(users[username]));
+
+            alert('Cadastro bem-sucedido!');
+            window.location.href = 'forum.html';
+        }
+    }
+</script>
+
+</body>
+</html>

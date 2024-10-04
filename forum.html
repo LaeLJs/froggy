@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Froggy-stack</title>
+    <link rel="shortcut icon" href="froggy icon.png" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="button.css">
+
+    <style>
+        *{
+            font-family: Arial, sans-serif;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #262222;
+            margin: 0;
+            font-family: "Montserrat", sans-serif;
+            font-family: "Poppins", system-ui;
+
+        }
+
+        nav {
+            background-color: #050a30;
+            color: rgb(128, 34, 210);
+            padding: 25px;
+            display: flex;
+            justify-content:center;
+            align-items: end;
+            text-align: end;
+            
+        }
+
+        nav a {
+            color: rgb(220, 218, 235);
+            text-decoration: none;
+            padding: 0 15px;
+            text-align: end;
+        }
+
+        main {
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+
+
+        }
+        
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        .topic {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .topic-header {
+            display: flex;
+            align-items: center;
+        }
+        .topic-header img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .topic-header h3 {
+            margin: 0;
+        }
+        .topic-content {
+            margin-top: 10px;
+        }
+        .topic-actions {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+        }
+        button.delete {
+            background-color: #dc3545;
+        }
+        button.edit {
+            background-color: #4547de;
+        }
+        button.clear-all {
+            background-color: #ff4444;
+            margin-top: 20px;
+        }
+        input, textarea {
+            width: 60%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        #icon{
+            width: 350px;
+            height: 300px;
+            float: left;
+            border-radius: 0px 0px 30px 30px ;
+        }
+  
+    </style>
+</head>
+<body>
+
+<nav>
+    <div>
+        
+<button class="btn"><a href="#recent-topics">Tópicos mais recentes</a></button>
+
+<button class="btn"><a href="#new-topic">Novo tópico</a></button>
+ 
+<button class="btn"> <a href="login.html" onclick="logout()">Conta</a></button>
+        
+    </div>
+    
+</nav>
+<img id="icon" src="froggy icon.png" alt="">
+<div id="blue"></div>
+
+
+<!--
+.____       _____  ___________.____     
+|    |     /  _  \ \_   _____/|    |    
+|    |    /  /_\  \ |    __)_ |    |    
+|    |___/    |    \|        \|    |___ 
+|_______ \____|__  /_______  /|_______ \
+        \/       \/        \/         \/
+        -->
+<!--
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢀⣀⡀⢠⣀⠀⠀⠀⠀⠀⠀⣀⡄⢀⣀⡀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⣿⣿⡗⠀⣿⣿⣿⣶⣶⣾⣿⣿⠀⢾⣿⣿⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠈⢉⣠⣼⣿⣿⣿⣿⣿⣿⣿⣿⣧⣄⣉⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⣀⣤⣤⣤⠀⢠⡿⠟⠛⢛⣋⣉⣉⣉⣉⣉⡛⠛⠻⠿⣦⠀⣤⣤⣤⣀⠀⠀
+⠀⢠⣿⣿⣿⣿⠀⣀⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣦⣄⠀⢸⣿⣿⣿⡆⠀
+⠀⠀⢿⣿⣿⣿⠀⢹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⣾⣿⣿⡿⠀⠀
+⠀⠀⠈⢿⣿⡿⠀⣾⣟⠉⠻⣿⣿⣿⣿⣿⣿⣿⣿⠿⠋⣙⣿⡀⢹⣿⡿⠁⠀⠀
+⠀⠀⠀⠀⠹⣧⣌⠙⠻⣿⣦⡈⠻⣿⣿⣿⣿⡿⠁⣠⣾⡿⠋⣁⣴⠏⠀⠀⠀⠀
+⠀⠀⠀⢀⣠⣬⣿⣿⣆⠈⣿⣷⡄⠹⣿⣿⡟⠀⣼⣿⠏⢠⣾⣿⣥⣄⡀⠀⠀⠀
+⠀⠀⠚⠻⣿⣿⣿⣿⣿⠀⣿⣿⣷⡀⠛⠛⠁⣼⣿⣿⡀⢻⣿⣿⣿⣿⠟⠛⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠉⠁⠰⠿⣿⠿⠇⠀⠀⠠⠿⢿⠿⢧⠈⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+-->
+
+<main>
+       <!-- Seção para criar novo tópico -->
+       <section id="new-topic">
+        <h2 class="section-title">Criar novo tópico</h2>
+        <input type="text" id="topic-title" placeholder="Título do Tópico" maxlength="50">
+        <textarea id="topic-content" rows="4" placeholder="Conteúdo do Tópico (máx 300 caracteres)" maxlength="300"></textarea>
+        <br>
+        <button onclick="postTopic()">Postar Tópico</button>
+    </section>
+    <hr>
+    <!-- Seção de Tópicos Recentes -->
+    <section id="recent-topics">
+        <h2 class="section-title">Tópicos Recentes</h2>
+        <div id="topics-list">
+            <!-- Os tópicos aparecerão aqui -->
+        </div>
+        <!-- Botão para excluir todas as postagens -->
+        <button class="clear-all" onclick="deleteAllTopics()">Excluir todas as postagens</button>
+    </section>
+
+ 
+</main>
+
+<script>
+    let topics = JSON.parse(localStorage.getItem('topics')) || [];
+
+    // Verificar se o usuário está logado
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) {
+        alert('Você precisa estar logado para acessar o fórum.');
+        window.location.href = 'login.html';
+    }
+
+    // Exibir tópicos recentes
+    function loadTopics() {
+        const topicsList = document.getElementById('topics-list');
+        topicsList.innerHTML = '';
+
+        topics.forEach((topic, index) => {
+            const topicElement = document.createElement('div');
+            topicElement.classList.add('topic');
+            topicElement.innerHTML = `
+                <div class="topic-header">
+                    <img src="${topic.user.profilePic}" alt="Profile Picture">
+                    <h3>${topic.user.username}</h3>
+                </div>
+                <p class="topic-content"><strong>Título:</strong> ${topic.title}</p>
+                <p class="topic-content"><strong>Conteúdo:</strong> ${topic.content}</p>
+                <div class="topic-actions">
+                    <button class="edit" onclick="editTopic(${index})">Editar</button>
+                    <button class="delete" onclick="deleteTopic(${index})">Excluir</button>
+                </div>
+                <hr>
+            `;
+            topicsList.appendChild(topicElement);
+        });
+    }
+
+    // Postar novo tópico
+    function postTopic() {
+        const title = document.getElementById('topic-title').value;
+        const content = document.getElementById('topic-content').value;
+
+        if (title && content) {
+            if (topics.length >= 80) {
+                alert('A seção de tópicos já está cheia! :( esperea até a próxima segunda ou a proxima quarta :)');
+                return;
+            }
+
+            const newTopic = {
+                user: user,
+                title: title,
+                content: content,
+            };
+
+            topics.push(newTopic);
+            localStorage.setItem('topics', JSON.stringify(topics));
+
+            alert('Tópico postado com sucesso!');
+            loadTopics();
+        } else {
+            alert('Preencha todos os campos para postar o tópico.');
+        }
+    }
+
+    // Editar tópico
+    function editTopic(index) {
+        const topic = topics[index];
+        const newTitle = prompt('Edite o título do tópico:', topic.title);
+        const newContent = prompt('Edite o conteúdo do tópico:', topic.content);
+
+        if (newTitle && newContent) {
+            topics[index].title = newTitle;
+            topics[index].content = newContent;
+            localStorage.setItem('topics', JSON.stringify(topics));
+            loadTopics();
+        }
+    }
+
+    // Excluir tópico individual
+    function deleteTopic(index) {
+        topics.splice(index, 1);
+        localStorage.setItem('topics', JSON.stringify(topics));
+        loadTopics();
+    }
+
+    // Excluir todas as postagens
+    function deleteAllTopics() {
+        const confirmDelete = confirm('Tem certeza que deseja excluir todas as postagens? Isso não pode ser desfeito.');
+        if (confirmDelete) {
+            topics = [];
+            localStorage.removeItem('topics');
+            loadTopics();
+            alert('Todas as postagens foram excluídas.');
+        }
+    }
+
+    // Logout
+    function logout() {
+        localStorage.removeItem('user');
+        alert('Você foi desconectado.');
+    }
+
+    // Carregar tópicos ao iniciar
+    window.onload = function () {
+        loadTopics();
+    };
+</script>
+
+</body>
+</html>
