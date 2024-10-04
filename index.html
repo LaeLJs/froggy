@@ -11,6 +11,38 @@
 
 <link rel="stylesheet" href="button.css">
 
+<script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js"></script> <!-- Para Realtime Database -->
+<script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js"></script> <!-- Para Firestore -->
+
+<script>
+    // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBVsgMGi-FZh4mheIlYyqB4DUxUUpRhVMM",
+  authDomain: "froggy-forum.firebaseapp.com",
+  databaseURL: "https://froggy-forum-default-rtdb.firebaseio.com",
+  projectId: "froggy-forum",
+  storageBucket: "froggy-forum.appspot.com",
+  messagingSenderId: "232485806348",
+  appId: "1:232485806348:web:f78ed48a42c2abcb12e929",
+  measurementId: "G-ZVQHBLYCGR"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+</script>
+
+
+
     <style>
         *{
             font-family: Arial, sans-serif;
