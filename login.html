@@ -150,6 +150,43 @@
         }
     }
 </script>
+<script src="https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js"></script>
+
+<script>
+   const auth = firebase.auth();
+
+   function registerUser(email, password) {
+      auth.createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+         // Registro bem-sucedido
+         const user = userCredential.user;
+         console.log("Usuário registrado:", user);
+      })
+      .catch((error) => {
+         console.error("Erro ao registrar usuário:", error.message);
+      });
+   }
+
+   function loginUser(email, password) {
+      auth.signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+         // Login bem-sucedido
+         const user = userCredential.user;
+         console.log("Usuário logado:", user);
+      })
+      .catch((error) => {
+         console.error("Erro ao logar usuário:", error.message);
+      });
+   }
+
+   // Para logout
+   function logoutUser() {
+      auth.signOut().then(() => {
+         console.log("Usuário deslogado");
+      });
+   }
+</script>
+
 
 </body>
 </html>
