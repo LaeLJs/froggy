@@ -231,24 +231,26 @@ const analytics = getAnalytics(app);
         const topicsList = document.getElementById('topics-list');
         topicsList.innerHTML = '';
 
-        topics.forEach((topic, index) => {
-            const topicElement = document.createElement('div');
-            topicElement.classList.add('topic');
-            topicElement.innerHTML = `
-                <div class="topic-header">
-                    <img src="${topic.user.profilePic}" alt="Profile Picture">
-                    <h3>${topic.user.username}</h3>
-                </div>
-                <p class="topic-content"><strong>Título:</strong> ${topic.title}</p>
-                <p class="topic-content"><strong>Conteúdo:</strong> ${topic.content}</p>
-                <div class="topic-actions">
-                    <button class="edit" onclick="editTopic(${index})">Editar</button>
-                    <button class="delete" onclick="deleteTopic(${index})">Excluir</button>
-                </div>
-                <hr>
-            `;
-            topicsList.appendChild(topicElement);
-        });
+        db.ref('posts').on('value', (snapshot) => {
+    const postsContainer = document.getElementById('posts-container');
+    postsContainer.innerHTML = ''; // Limpa a seção de posts
+
+    snapshot.forEach((childSnapshot) => {
+        const post = childSnapshot.val();
+        const postElement = document.createElement('div');
+        postElement.innerHTML = `
+            <div>
+                <img src="${post.profilePic}" alt="Foto de Perfil" width="50" />
+                <h3>${post.username}</h3>
+                <h4>${post.title}</h4>
+                <p>${post.content}</p>
+                <small>${new Date(post.timestamp).toLocaleString()}</small>
+            </div>
+        `;
+        postsContainer.appendChild(postElement);
+    });
+});
+
     }
 
     // Postar novo tópico
